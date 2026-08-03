@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ماشین حساب هوشمند</title>
+    <style>
+        /* ===== CSS داخل خود HTML ===== */
+        body {
+            font-family: 'Tahoma', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 0;
+            padding: 20px;
+        }
+
+        .container {
+            background: white;
+            padding: 40px;
+            border-radius: 25px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            max-width: 500px;
+            width: 100%;
+            text-align: center;
+        }
+
+        h1 {
+            color: #2c3e50;
+            margin-bottom: 10px;
+            font-size: 32px;
+        }
+
+        p {
+            color: #7f8c8d;
+            margin-bottom: 30px;
+        }
+
+        .input-group {
+            margin-bottom: 20px;
+            text-align: right;
+        }
+
+        label {
+            display: block;
+            color: #34495e;
+            font-weight: bold;
+            margin-bottom: 8px;
+            font-size: 16px;
+        }
+
+        input {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #bdc3c7;
+            border-radius: 10px;
+            font-size: 18px;
+            box-sizing: border-box;
+            transition: border-color 0.3s;
+            text-align: center;
+        }
+
+        input:focus {
+            border-color: #667eea;
+            outline: none;
+        }
+
+        button {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 15px 40px;
+            font-size: 20px;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin-top: 10px;
+            font-weight: bold;
+            width: 100%;
+        }
+
+        button:hover {
+            transform: scale(1.03);
+            box-shadow: 0 10px 30px rgba(102, 126, 234, 0.4);
+        }
+
+        .result-box {
+            margin-top: 25px;
+            padding: 20px;
+            border-radius: 15px;
+            background: #f8f9fa;
+            min-height: 80px;
+            text-align: right;
+            line-height: 2;
+        }
+
+        .result-box .answer {
+            color: #2c3e50;
+            font-size: 24px;
+            font-weight: bold;
+        }
+
+        .result-box .explanation {
+            color: #27ae60;
+            font-size: 18px;
+            margin-top: 10px;
+            padding: 10px;
+            background: #e8f8f5;
+            border-radius: 10px;
+        }
+
+        .result-box .error {
+            color: #e74c3c;
+            font-size: 18px;
+        }
+    </style>
+</head>
+<body>
+    
+    <div class="container">
+        <h1>🧮 ماشین حساب هوشمند</h1>
+        <p>دو عدد وارد کن تا جمعشون رو با توضیح کامل ببینی!</p>
+        
+        <div class="input-group">
+            <label>عدد اول:</label>
+            <input type="number" id="num1" placeholder="مثلاً ۵">
+        </div>
+        
+        <div class="input-group">
+            <label>عدد دوم:</label>
+            <input type="number" id="num2" placeholder="مثلاً ۳">
+        </div>
+        
+        <button onclick="calculateSum()">🧮 محاسبه جمع</button>
+        
+        <div id="result" class="result-box">
+            <!-- نتیجه اینجا نمایش داده میشه -->
+        </div>
+    </div>
+
+    <script>
+        // ===== JavaScript داخل خود HTML =====
+        
+        // تابع اصلی جمع با توضیح کامل
+        function calculateSum() {
+            // 1. گرفتن مقادیر از ورودی‌ها
+            let num1 = document.getElementById('num1').value;
+            let num2 = document.getElementById('num2').value;
+            
+            // 2. پیدا کردن محل نمایش نتیجه
+            let resultDiv = document.getElementById('result');
+            
+            // 3. اعتبارسنجی: آیا کاربر عدد وارد کرده؟
+            if (num1 === '' || num2 === '') {
+                resultDiv.innerHTML = `
+                    <div class="error">⚠️ لطفاً هر دو عدد را وارد کن!</div>
+                `;
+                return; // از تابع خارج میشه
+            }
+            
+            // 4. تبدیل رشته به عدد (مهم!)
+            let number1 = Number(num1);
+            let number2 = Number(num2);
+            
+            // 5. اعتبارسنجی: آیا واقعاً عدد هست؟
+            if (isNaN(number1) || isNaN(number2)) {
+                resultDiv.innerHTML = `
+                    <div class="error">⚠️ لطفاً فقط عدد وارد کن! (مثلاً ۵ یا ۳.۵)</div>
+                `;
+                return;
+            }
+            
+            // 6. اجرای عملیات جمع
+            let sum = number1 + number2;
+            
+            // 7. ساخت توضیح کامل ریاضی
+            let explanation = `
+                <div class="answer">✅ جواب: ${number1} + ${number2} = ${sum}</div>
+                <div class="explanation">
+                    📖 <strong>توضیح:</strong><br>
+                    • عدد اول (${number1}) را با عدد دوم (${number2}) جمع کردیم.<br>
+                    • در ریاضیات، عمل جمع به معنی <strong>افزایش</strong> مقدار است.<br>
+                    • وقتی ${number1} را با ${number2} جمع می‌کنیم، 
+                    نتیجه <strong>${sum}</strong> می‌شود.<br>
+                    • دلیل: ${number1} + ${number2} = 
+                    ${number1 > 0 && number2 > 0 ? 'هر دو عدد مثبت هستند، پس نتیجه بزرگتر از هر دو عدد است' : 
+                      number1 < 0 && number2 < 0 ? 'هر دو عدد منفی هستند، پس نتیجه منفی‌تر می‌شود' : 
+                      'یکی از اعداد مثبت و دیگری منفی است، پس تفاوت آنها محاسبه می‌شود'}.
+                </div>
+            `;
+            
+            // 8. نمایش نتیجه در صفحه
+            resultDiv.innerHTML = explanation;
+        }
+
+        // 9. اضافه کردن قابلیت اینتر (Enter) برای راحتی کاربر
+        document.addEventListener('keydown', function(event) {
+            if (event.key === 'Enter') {
+                // اگر کاربر Enter زد، تابع جمع اجرا بشه
+                calculateSum();
+            }
+        });
+
+        // 10. پیام خوش‌آمدگویی در کنسول (برای برنامه‌نویس)
+        console.log('✅ ماشین حساب هوشمند بارگذاری شد!');
+        console.log('💡 کاربر میتواند دو عدد وارد کند و توضیح کامل جمع را ببیند.');
+        
+        // 11. یه تست خودکار برای اطمینان از کارکرد JavaScript
+        console.log('🧪 تست: اگر این پیام رو می‌بینی، JavaScript درست کار میکنه!');
+    </script>
+
+</body>
+</html>
